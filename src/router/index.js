@@ -60,8 +60,7 @@ const router = createRouter({
       name: "404Page",
       component: () => import("../views/404Page.vue"),
     },
-  ],
-  linkActiveClass: "bg-indigo-50 border-indigo-500 text-indigo-700",
+  ]
 });
 
 export default router;

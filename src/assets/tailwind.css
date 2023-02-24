@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root{
+  --health: #65a30d;
+  --tracker: #0ea5e9;
+  --fitness: #f59e0b;
+}

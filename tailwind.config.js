@@ -3,7 +3,11 @@ module.exports = {
   content: ["./index.html", "./src/**/*.{vue,js,ts,jsx,tsx}"],
   theme: {
     extend: {
-      colors: {},
+      colors: {
+        health: "var(--health)",
+        tracker: "var(--tracker)",
+        fitness: "var(--fitness)",
+      },
     },
     fontFamily: {
       Roboto: ["Roboto, sans-serif"],
@@ -17,7 +21,5 @@ module.exports = {
       md: "768px",
     },
   },
-  plugins: [
-    require('@tailwindcss/forms')
-  ],
+  plugins: [require("@tailwindcss/forms"), require("@tailwindcss/line-clamp")],
 };
