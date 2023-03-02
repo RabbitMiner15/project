@@ -223,7 +223,7 @@ import {
 } from "@headlessui/vue";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/vue/24/outline";
 
-const loggedin = false;
+const loggedin = true;
 const user = {
   name: "Martin Kremer",
   imageUrl: "/2.png",

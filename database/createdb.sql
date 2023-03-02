@@ -199,7 +199,7 @@ INSERT INTO tblInterest (dtInterestName,dtCategory,dtUnit,dtFitbit) VALUES
 ('Alcohol','Tracker','d',0),
 ('Sugar','Tracker','d',0),
 ('Vegan','Tracker','d',0),
-('Vegetarian','Tracker','d',0),
+('Smoke','Tracker','d',0),
 ('Activity','Fitness','h',1),
 ('Distance','Fitness','km',1);
 

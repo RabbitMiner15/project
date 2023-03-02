@@ -23,7 +23,6 @@ const options = {
 };
 
 const app = createApp(App);
-
 app.use(router);
 app.use(Toast, options);
 app.mount("#app");
