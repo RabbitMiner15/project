@@ -226,7 +226,7 @@ import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/vue/24/outline";
 const loggedin = false;
 const user = {
   name: "Martin Kremer",
-  imageUrl: "/avataaars.png",
+  imageUrl: "/2.png",
 };
 const navigation = [
   { name: "Home", href: "/", current: true },

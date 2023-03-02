@@ -203,69 +203,64 @@ INSERT INTO tblInterest (dtInterestName,dtCategory,dtUnit,dtFitbit) VALUES
 ('Activity','Fitness','h',1),
 ('Distance','Fitness','km',1);
 
--- DROP PROCEDURE IF EXISTS spSignUp;
+DROP PROCEDURE IF EXISTS spSignUp;
 
--- DELIMITER $$
+DELIMITER $$
 
--- CREATE PROCEDURE spSignUp(IN inJSON JSON, OUT outJSON JSON)
--- BEGIN
---   DECLARE vJSONSCHEMA JSON;
+CREATE PROCEDURE spSignUp(IN inJSON JSON, OUT outJSON JSON)
+BEGIN
+  DECLARE vJSONSCHEMA JSON;
+  DECLARE fiUser INT;
+  DECLARE vUser JSON;
 
---   DECLARE EXIT HANDLER FOR 1062
--- 	BEGIN
---  	  SET pout_JSON = '{"code": 400, "label": "Duplicate Key", "message": "This user already exists"}';
--- 	END;
+  DECLARE EXIT HANDLER FOR 1062
+	BEGIN
+ 	  SET outJSON = '{"code": 400, "label": "Duplicate Key", "message": "This user already exists"}';
+	END;
 
---   DECLARE EXIT HANDLER FOR SQLEXCEPTION
--- 	BEGIN
--- 		SET pout_JSON = '{"code": 500,"label": "Internal Server Error","message": "The procedure has encountered a situation it does not know how to handle."}';
--- 	END;
+  DECLARE EXIT HANDLER FOR SQLEXCEPTION
+	BEGIN
+		SET outJSON = '{"code": 500,"label": "Internal Server Error","message": "The procedure has encountered a situation it does not know how to handle."}';
+	END;
 
--- 	DECLARE EXIT HANDLER FOR 1406
--- 	BEGIN
---  	  SET pout_JSON = '{"code": 400, "label": "Bad Request", "message": "Input is too long"}';
--- 	END;
+	DECLARE EXIT HANDLER FOR 1406
+	BEGIN
+ 	  SET outJSON = '{"code": 400, "label": "Bad Request", "message": "Input is too long"}';
+	END;
     
---   DECLARE EXIT HANDLER FOR 3819
--- 	BEGIN
---  	  SET pout_JSON = '{"code": 400, "label": "Bad Request", "message": "Input cannot be empty"}';
--- 	END;
+  DECLARE EXIT HANDLER FOR 3819
+	BEGIN
+ 	  SET outJSON = '{"code": 400, "label": "Bad Request", "message": "Input cannot be empty"}';
+	END;
 
---   SET vJSONSchema = '{
--- 		"type":"object",
--- 		"properties": {
---       "username": {"type":"string"},
---       "email": {"type":"string"},
---       "password": {"type":"string"},
---       "picture": {"type":"number"},
---       "fiInterest": {"type":"array"}},
--- 		"required": ["username","email","password"]
--- 	}';
---   IF NOT (JSON_VALID(inJSON)) THEN
--- 		SET outJSON = '{
--- 			"code": 400,
---           "label": "Bad Request",
---           "message": "The JSON string provided is not valid."
---         }';
--- 	ELSE
--- 		IF JSON_UNQUOTE(JSON_EXTRACT(pin_JSON,'$.email')) regexp "^[a-zA-Z0-9][a-zA-Z0-9.!#$%&\'*+-/=?^_`{|}~]*?[a-zA-Z0-9._-]?@[a-zA-Z0-9][a-zA-Z0-9._-]*?[a-zA-Z0-9]?\\.[a-zA-Z]{2,63}$" > 0 THEN
--- 			INSERT INTO tblPerson (idPerson,fiType,dtFirstName,dtLastName,dtEmail) VALUES 
--- 				(JSON_UNQUOTE(JSON_EXTRACT(pin_JSON,'$.idPerson')),JSON_UNQUOTE(JSON_EXTRACT(pin_JSON,'$.fiType')),JSON_UNQUOTE(JSON_EXTRACT(pin_JSON,'$.firstName')),JSON_UNQUOTE(JSON_EXTRACT(pin_JSON,'$.lastName')),JSON_UNQUOTE(JSON_EXTRACT(pin_JSON,'$.email')));
--- 					SET pout_JSON = CONCAT('{
--- 						"code": 200,
--- 						"label": "OK",
--- 						"message": "Person added"
--- 					}');
--- 					ELSE
--- 				SET pout_JSON = '{
--- 					"code": 400,
--- 					"label": "Bad Request",
--- 					"message": "Email not valid"
--- 				}';
--- 			END IF;
--- 	END IF;
--- END$$
+  SET vJSONSchema = '{
+		"type":"object",
+		"properties": {
+      "username": {"type":"string"},
+      "email": {"type":"string"},
+      "password": {"type":"string"},
+      "picture": {"type":"number"}},
+		"required": ["username","email","password","picture"]
+	}';
+  IF NOT (JSON_VALID(inJSON)) THEN
+		SET outJSON = '{
+			"code": 400,
+          "label": "Bad Request",
+          "message": "The JSON string provided is not valid."
+        }';
+	ELSE
+		INSERT INTO tblUser (dtUsername, dtEmail, dtPassword,dtPicture) VALUES 
+			(JSON_UNQUOTE(JSON_EXTRACT(inJSON,'$.username')),JSON_UNQUOTE(JSON_EXTRACT(inJSON,'$.email')),JSON_UNQUOTE(JSON_EXTRACT(inJSON,'$.password')),JSON_UNQUOTE(JSON_EXTRACT(inJSON,'$.picture')));
+    SELECT LAST_INSERT_ID() INTO fiUser;
+    SELECT JSON_OBJECT('idUser',idUser, 'username', dtUsername, 'email', dtEmail, 'picture', dtPicture, 'groupInvites', dtGroupInvites, 'temperature', dtTemperature, 'distance', dtDistance, 'volume', dtVolume, 'weight', dtWeight, 'summary', dtSummary, 'websiteNoti', dtWebsiteNoti, 'emailNoti', dtEmailNoti, 'discordNoti', dtDiscordNoti, 'private', dtPrivate)INTO vUser FROM tblUser WHERE idUser = fiUser ;
+    SET outJSON = CONCAT('{
+			"code": 200,
+			"label": "OK",
+			"message": ',vUser,
+    '}');
+	END IF;
+END$$
 
--- DELIMITER ;
+DELIMITER ;
 
 
