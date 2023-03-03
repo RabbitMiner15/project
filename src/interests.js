@@ -1,4 +1,9 @@
-import { HeartIcon, MoonIcon, ScaleIcon } from "@heroicons/vue/24/outline";
+import {
+  CalendarDaysIcon,
+  HeartIcon,
+  MoonIcon,
+  ScaleIcon,
+} from "@heroicons/vue/24/outline";
 import {
   Apple,
   Bicycle,
@@ -9,6 +14,7 @@ import {
   KnifeFork,
   Mug,
   NoSmoking,
+  Soccer,
   Sugar,
 } from "@element-plus/icons-vue";
 
@@ -21,15 +27,19 @@ const interests = [
     fg: "text-violet-600",
     bg: "bg-violet-50",
     category: "Health",
+    categoryIcon: HeartIcon,
+    categoryColor: "fill-red-500",
   },
   {
     id: 2,
-    name: "Nutriton",
+    name: "Nutrition",
     unit: "kcal",
     icon: KnifeFork,
     fg: "text-amber-400",
     bg: "bg-amber-50",
     category: "Health",
+    categoryIcon: HeartIcon,
+    categoryColor: "fill-red-500",
   },
   {
     id: 3,
@@ -39,6 +49,8 @@ const interests = [
     fg: "text-red-600",
     bg: "bg-red-50",
     category: "Health",
+    categoryIcon: HeartIcon,
+    categoryColor: "fill-red-500",
   },
   {
     id: 4,
@@ -48,6 +60,8 @@ const interests = [
     fg: "text-sky-500",
     bg: "bg-sky-50",
     category: "Health",
+    categoryIcon: HeartIcon,
+    categoryColor: "fill-red-500",
   },
   {
     id: 5,
@@ -57,6 +71,8 @@ const interests = [
     fg: "text-gray-400",
     bg: "bg-gray-50",
     category: "Health",
+    categoryIcon: HeartIcon,
+    categoryColor: "fill-red-500",
   },
   {
     id: 6,
@@ -66,6 +82,8 @@ const interests = [
     fg: "text-red-400",
     bg: "bg-red-50",
     category: "Health",
+    categoryIcon: HeartIcon,
+    categoryColor: "fill-red-500",
   },
   {
     id: 7,
@@ -75,6 +93,8 @@ const interests = [
     fg: "text-amber-400",
     bg: "bg-amber-50",
     category: "Tracker",
+    categoryIcon: CalendarDaysIcon,
+    categoryColor: "fill-sky-500",
   },
   {
     id: 8,
@@ -84,6 +104,8 @@ const interests = [
     fg: "text-red-500",
     bg: "bg-red-50",
     category: "Tracker",
+    categoryIcon: CalendarDaysIcon,
+    categoryColor: "fill-sky-500",
   },
   {
     id: 9,
@@ -93,6 +115,8 @@ const interests = [
     fg: "text-amber-400",
     bg: "bg-amber-50",
     category: "Tracker",
+    categoryIcon: CalendarDaysIcon,
+    categoryColor: "fill-sky-500",
   },
   {
     id: 10,
@@ -102,6 +126,8 @@ const interests = [
     fg: "text-lime-400",
     bg: "bg-lime-50",
     category: "Tracker",
+    categoryIcon: CalendarDaysIcon,
+    categoryColor: "fill-sky-500",
   },
   {
     id: 11,
@@ -111,6 +137,8 @@ const interests = [
     fg: "text-amber-400",
     bg: "bg-amber-50",
     category: "Tracker",
+    categoryIcon: CalendarDaysIcon,
+    categoryColor: "fill-sky-500",
   },
   {
     id: 12,
@@ -120,6 +148,8 @@ const interests = [
     fg: "text-blue-400",
     bg: "bg-blue-50",
     category: "Fitness",
+    categoryIcon: Soccer,
+    categoryColor: "text-amber-500",
   },
   {
     id: 13,
@@ -129,6 +159,8 @@ const interests = [
     fg: "text-teal-400",
     bg: "bg-teal-50",
     category: "Fitness",
+    categoryIcon: Soccer,
+    categoryColor: "text-amber-500",
   },
 ];
 

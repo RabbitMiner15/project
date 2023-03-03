@@ -116,23 +116,24 @@
               </h2>
               <div class="mt-6 flow-root">
                 <ul role="list" class="-my-5 divide-y divide-gray-200">
-                  <li v-for="goal in goals" :key="goal.id" class="py-5">
-                    <div
+                  <li v-for="goal in goals.slice(0,3)" :key="goal.id" class="py-5">
+                    <div 
                       class="relative"
                     >
                       <h3 class="text-sm font-semibold text-gray-800">
                         
                           <!-- Extend touch target to entire panel -->
                           <span class="absolute inset-0" aria-hidden="true" />
-                          {{ goal.target }}{{ goal.unit }}{{ " " }}{{ goal.interest }}{{ " in " }}{{ goal.deadline }}
+                          {{ goal.target }}{{ interests[goal.idInterest-1].unit }}{{ " " }}{{ interests[goal.idInterest-1].name  }}{{ " in " }}{{ daysUntil(goal.deadline) }} {{ "days" }}
                         
                       </h3>
                       <p class="mt-1 text-sm text-gray-600 line-clamp-2">
                         <div class="w-full bg-gray-200 rounded-full dark:bg-gray-700">
-    <div class="bg-lime-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full" :style="'width: ' + (goal.progress/goal.target) * 100 + '%'"> {{ Math.round(goal.progress/goal.target *100) }}%
-    </div>
-  </div>
-                    </p>
+                          <div class="bg-lime-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full" :style="'width: ' + (goal.progress/goal.target) * 100 + '%'">
+                            {{ Math.round(goal.progress/goal.target *100) }}%
+                          </div>
+                        </div>
+                      </p>
                     </div>
                   </li>
                 </ul>
@@ -205,12 +206,13 @@
 <script setup>
 import {
   PlusIcon,
-  MoonIcon,
-CakeIcon,
+
 
 } from "@heroicons/vue/24/outline";
-import {KnifeFork} from '@element-plus/icons-vue'
+
 import interests from "../interests.js"
+import goals from "../goals.js"
+import { daysUntil } from "../converter";
 const user = {
   name: "Martin Kremer",
   email: "chelsea.hagon@example.com",
@@ -308,24 +310,7 @@ const groups = [
   },
   
 ];
-const goals = [
-  {
-    id: 1,
-    target: 20,
-    unit: "l",
-    interest: "Water",
-    deadline: "5 days",
-    progress: 10,
-  },
-  {
-    id: 2,
-    target: 40,
-    unit: "h",
-    interest: "Sleep",
-    deadline: "7 days",
-    progress: 35,
-  },
-];
+
 
 const stats = [
   { label: "Achievements", value: 12 },

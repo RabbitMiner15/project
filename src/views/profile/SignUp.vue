@@ -453,26 +453,26 @@ const categories = [
   { id: 3, name: "Fitness", check: false },
 ];
 const health = [
-  { id: interests[0].id, name: interests[0].name, check: false},
-  { id: interests[1].id, name: interests[1].name, check: false},
-  { id: interests[2].id, name: interests[2].name, check: false},
-  { id: interests[3].id, name: interests[3].name, check: false},
-  { id: interests[4].id, name: interests[4].name, check: false},
-  { id: interests[5].id, name: interests[5].name, check: false},
-]
+  { id: interests[0].id, name: interests[0].name, check: false },
+  { id: interests[1].id, name: interests[1].name, check: false },
+  { id: interests[2].id, name: interests[2].name, check: false },
+  { id: interests[3].id, name: interests[3].name, check: false },
+  { id: interests[4].id, name: interests[4].name, check: false },
+  { id: interests[5].id, name: interests[5].name, check: false },
+];
 
 const tracker = [
-  { id: interests[6].id, name: interests[6].name, check: false},
-  { id: interests[7].id, name: interests[7].name, check: false},
-  { id: interests[8].id, name: interests[8].name, check: false},
-  { id: interests[9].id, name: interests[9].name, check: false},
-  { id: interests[10].id, name: interests[10].name, check: false},
-]
+  { id: interests[6].id, name: interests[6].name, check: false },
+  { id: interests[7].id, name: interests[7].name, check: false },
+  { id: interests[8].id, name: interests[8].name, check: false },
+  { id: interests[9].id, name: interests[9].name, check: false },
+  { id: interests[10].id, name: interests[10].name, check: false },
+];
 
 const fitness = [
-  { id: interests[11].id, name: interests[11].name, check: false},
-  { id: interests[12].id, name: interests[12].name, check: false},
-]
+  { id: interests[11].id, name: interests[11].name, check: false },
+  { id: interests[12].id, name: interests[12].name, check: false },
+];
 const form = ref({
   username: "",
   email: "",
