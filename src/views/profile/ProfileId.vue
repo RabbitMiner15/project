@@ -30,13 +30,7 @@
                 v-for="achievement in user.visibleAchievements"
                 :key="achievements[achievement - 1].id"
                 class="px-6 py-5 text-center text-sm font-medium"
-                ref="targetRef"
-                @mouseenter="showTooltip()"
-                @mouseleave="hideTooltip()"
               >
-                <div ref="tooltipRef" class="hidden p-2 bg-gray-700 text-white">
-                  {{ achievements[achievement - 1].description }}
-                </div>
                 <component
                   :is="
                     interests[achievements[achievement - 1].fiInterest - 1].icon
@@ -136,36 +130,9 @@
 import interests from "../../interests";
 import users from "../../users";
 import { useRoute } from "vue-router";
-import { ref,  computed, onMounted } from "vue";
+import { computed } from "vue";
 import achievements from "../../achievements";
-import { createPopper } from "@popperjs/core";
 
-let popperInstance = null;
-const showTooltip = () => {
-  $refs.tooltipRef.value.classList.remove("hidden");
-  if (!popperInstance) {
-    popperInstance = createPopper(targetRef.value, tooltipRef.value, {
-      placement: "bottom",
-      modifiers: [
-        {
-          name: "offset",
-          options: {
-            offset: [0, 10],
-          },
-        },
-      ],
-    });
-  }
-};
-const hideTooltip = () => {
-  $refs.tooltipRef.value.classList.add("hidden");
-};
-onMounted(() => {
-  if (popperInstance) {
-    popperInstance.destroy();
-    popperInstance = null;
-  }
-});
 const route = useRoute();
 const userId = computed(() => {
   const matches = route.path.match(/^\/profile\/(\d+)/);

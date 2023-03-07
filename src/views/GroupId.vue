@@ -181,13 +181,15 @@
               </form>
             </div>
           </aside>
-          <div
-            class="sm:my-auto overflow-hidden bg-white shadow sm:rounded-md md:col-span-3"
-          >
+          <div class="sm:my-auto overflow-hidden h-full md:col-span-3">
             <ul role="list" class="divide-y divide-gray-200">
-              <li v-for="goal in filter" :key="goal.id">
-                <a href="#" class="block hover:bg-gray-50">
-                  <div class="px-4 py-4 sm:px-6">
+              <li
+                v-for="goal in filter"
+                :key="goal.id"
+                class="px-4 py-4 sm:px-6 bg-white border shadow-sm my-3 sm:rounded-md block hover:bg-gray-50"
+              >
+                <a href="#" class="">
+                  <div class="">
                     <div class="flex items-center justify-between">
                       <div class="flex flex-row">
                         <p class="truncate text-sm font-medium text-lime-600">
@@ -274,7 +276,7 @@
               </li>
             </ul>
           </div>
-          <section aria-labelledby="groups-title" class="py-10">
+          <section aria-labelledby="groups-title" class="py-3">
             <div class="overflow-hidden rounded-lg bg-white shadow">
               <div class="p-6">
                 <h2

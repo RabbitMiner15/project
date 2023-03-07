@@ -5,6 +5,7 @@ const users = [
     id: 1,
     name: "Martin",
     picture: 2,
+    email: "KreMa914@school.lu",
     visibleInterests: [1,2],
     visibleAchievements: [1, 2, 3, 4, 5],
     joined: dateToString(new Date()),

@@ -1,5 +1,5 @@
 <template>
-  <div class="overflow-hidden bg-white py-16 px-6 lg:px-8 lg:py-24">
+  <div class="overflow-hidden bg-white py-16 px-6 md:px-8 md:py-24">
     <div class="relative mx-auto max-w-xl">
       <svg
         class="absolute left-full translate-x-1/2 transform"

@@ -1,6 +1,6 @@
 <template>
   <footer class="bg-white">
-    <div class="mx-auto max-w-7xl overflow-hidden py-20 px-6 sm:py-24 lg:px-8">
+    <div class="mx-auto max-w-7xl overflow-hidden py-20 px-6 sm:py-24 md:px-8">
       <nav
         class="-mb-6 columns-2 sm:flex sm:justify-center sm:space-x-12"
         aria-label="Footer"

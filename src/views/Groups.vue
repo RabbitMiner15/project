@@ -173,16 +173,15 @@
             </div>
           </aside>
 
-          <div
-            class="sm:my-auto overflow-hidden bg-white shadow sm:rounded-md md:col-span-4"
-          >
-            <ul role="list" class="divide-y divide-gray-200">
-              <li v-for="group in filter" :key="group.id">
-                <router-link
-                  :to="'/groups/' + group.id"
-                  class="block hover:bg-gray-50"
-                >
-                  <div class="px-4 py-4 sm:px-6">
+          <div class="sm:my-auto overflow-hidden h-full md:col-span-4">
+            <ul role="list" class="">
+              <li
+                v-for="group in filter"
+                :key="group.id"
+                class="px-4 py-4 sm:px-6 block hover:bg-gray-50 bg-white border shadow-sm my-3 sm:rounded-md"
+              >
+                <router-link :to="'/groups/' + group.id" class="">
+                  <div class="">
                     <div class="flex items-center justify-between">
                       <div class="flex flex-row">
                         <p class="truncate text-sm font-medium text-lime-600">
@@ -239,13 +238,15 @@
         <div class="md:grid md:grid-cols-5 md:gap-2">
           <aside class="pt-3 pb-6 md:pt-6 md:pb-12 md:col-span-1"></aside>
 
-          <div
-            class="sm:my-auto overflow-hidden bg-white shadow sm:rounded-md md:col-span-4"
-          >
-            <ul role="list" class="divide-y divide-gray-200">
-              <li v-for="invite in invites" :key="invite.id">
-                <div class="block hover:bg-gray-50 cursor-pointer">
-                  <div class="px-4 py-4 sm:px-6">
+          <div class="sm:my-auto overflow-hidden md:col-span-4 h-full">
+            <ul role="list" class="">
+              <li
+                v-for="invite in invites"
+                :key="invite.id"
+                class="block hover:bg-gray-50 bg-white cursor-pointer px-4 py-4 sm:px-6 border shadow-sm sm:rounded-md my-3"
+              >
+                <div class="">
+                  <div class="">
                     <div class="flex items-center justify-between">
                       <div class="flex flex-row">
                         <p class="truncate text-sm font-medium text-lime-600">
@@ -268,10 +269,7 @@
                       </div>
                       <div class="flex -space-x-3 overflow-hidden">
                         <div
-                          v-for="(member, index) in invite.members.slice(
-                            0,
-                            3
-                          )"
+                          v-for="(member, index) in invite.members.slice(0, 3)"
                           :key="index"
                           class="flex -space-x-2 overflow-hidden"
                         >

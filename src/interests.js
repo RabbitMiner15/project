@@ -29,6 +29,7 @@ const interests = [
     category: "Health",
     categoryIcon: HeartIcon,
     categoryColor: "fill-red-500",
+    origin: "M | F",
   },
   {
     id: 2,
@@ -40,6 +41,7 @@ const interests = [
     category: "Health",
     categoryIcon: HeartIcon,
     categoryColor: "fill-red-500",
+    origin: "M",
   },
   {
     id: 3,
@@ -51,6 +53,7 @@ const interests = [
     category: "Health",
     categoryIcon: HeartIcon,
     categoryColor: "fill-red-500",
+    origin: "M | F",
   },
   {
     id: 4,
@@ -62,6 +65,7 @@ const interests = [
     category: "Health",
     categoryIcon: HeartIcon,
     categoryColor: "fill-red-500",
+    origin: "M",
   },
   {
     id: 5,
@@ -73,6 +77,7 @@ const interests = [
     category: "Health",
     categoryIcon: HeartIcon,
     categoryColor: "fill-red-500",
+    origin: "M",
   },
   {
     id: 6,
@@ -84,6 +89,7 @@ const interests = [
     category: "Health",
     categoryIcon: HeartIcon,
     categoryColor: "fill-red-500",
+    origin: "M | F",
   },
   {
     id: 7,
@@ -95,6 +101,7 @@ const interests = [
     category: "Tracker",
     categoryIcon: CalendarDaysIcon,
     categoryColor: "fill-sky-500",
+    origin: "M",
   },
   {
     id: 8,
@@ -106,6 +113,7 @@ const interests = [
     category: "Tracker",
     categoryIcon: CalendarDaysIcon,
     categoryColor: "fill-sky-500",
+    origin: "M",
   },
   {
     id: 9,
@@ -117,6 +125,7 @@ const interests = [
     category: "Tracker",
     categoryIcon: CalendarDaysIcon,
     categoryColor: "fill-sky-500",
+    origin: "M",
   },
   {
     id: 10,
@@ -128,6 +137,7 @@ const interests = [
     category: "Tracker",
     categoryIcon: CalendarDaysIcon,
     categoryColor: "fill-sky-500",
+    origin: "M",
   },
   {
     id: 11,
@@ -139,6 +149,7 @@ const interests = [
     category: "Tracker",
     categoryIcon: CalendarDaysIcon,
     categoryColor: "fill-sky-500",
+    origin: "M",
   },
   {
     id: 12,
@@ -150,6 +161,7 @@ const interests = [
     category: "Fitness",
     categoryIcon: Soccer,
     categoryColor: "text-amber-500",
+    origin: "M | F",
   },
   {
     id: 13,
@@ -161,6 +173,7 @@ const interests = [
     category: "Fitness",
     categoryIcon: Soccer,
     categoryColor: "text-amber-500",
+    origin: "M | F",
   },
 ];
 

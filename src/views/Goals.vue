@@ -171,96 +171,89 @@
             </div>
           </aside>
 
-          <div
-            class="sm:my-auto overflow-hidden bg-white shadow sm:rounded-md md:col-span-4"
-          >
-            <ul role="list" class="divide-y divide-gray-200">
-              <li v-for="goal in filter" :key="goal.id">
-                <a href="#" class="block hover:bg-gray-50">
-                  <div class="px-4 py-4 sm:px-6">
-                    <div class="flex items-center justify-between">
-                      <div class="flex flex-row">
-                        <p class="truncate text-sm font-medium text-lime-600">
-                          {{ goal.target
-                          }}{{ interests[goal.idInterest - 1].unit }}{{ " "
-                          }}{{ interests[goal.idInterest - 1].name }}&nbsp;
-                        </p>
+          <div class="sm:my-auto overflow-hidden h-full md:col-span-4">
+            <ul role="list">
+              <li
+                v-for="goal in filter"
+                :key="goal.id"
+                class="px-4 py-4 sm:px-6 bg-white border shadow-sm my-3 sm:rounded-md "
+              >
+                <div class="flex items-center justify-between">
+                  <div class="flex flex-row">
+                    <p class="truncate text-sm font-medium text-lime-600">
+                      {{ goal.target }}{{ interests[goal.idInterest - 1].unit
+                      }}{{ " " }}{{ interests[goal.idInterest - 1].name }}&nbsp;
+                    </p>
 
-                        <p
-                          v-if="daysUntil(goal.deadline) > 0"
-                          class="truncate text-sm font-medium text-lime-600"
-                        >
-                          {{ "in " }}{{ daysUntil(goal.deadline) }}{{ " days" }}
-                        </p>
-                      </div>
+                    <p
+                      v-if="daysUntil(goal.deadline) > 0"
+                      class="truncate text-sm font-medium text-lime-600"
+                    >
+                      {{ "in " }}{{ daysUntil(goal.deadline) }}{{ " days" }}
+                    </p>
+                  </div>
 
-                      <div class="ml-2 flex flex-shrink-0">
-                        <p
-                          v-if="daysUntil(goal.deadline) > 0"
-                          class="inline-flex rounded-full bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800"
-                        >
-                          Ongoing
-                        </p>
-                        <p
-                          v-else
-                          class="inline-flex rounded-full bg-red-100 px-2 text-xs font-semibold leading-5 text-red-800"
-                        >
-                          Done
-                        </p>
-                      </div>
-                    </div>
-                    <div class="mt-2 sm:flex sm:justify-between">
-                      <div class="sm:flex">
-                        <p class="flex items-center text-sm text-gray-500">
-                          <component
-                            :is="interests[goal.idInterest - 1].categoryIcon"
-                            :class="[
-                              interests[goal.idInterest - 1].categoryColor,
-                              'mr-1.5 h-5 w-5 flex-shrink-0',
-                            ]"
-                            aria-hidden="true"
-                          />
-                          {{ interests[goal.idInterest - 1].category }}
-                        </p>
-                      </div>
+                  <div class="ml-2 flex flex-shrink-0">
+                    <p
+                      v-if="daysUntil(goal.deadline) > 0"
+                      class="inline-flex rounded-full bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800"
+                    >
+                      Ongoing
+                    </p>
+                    <p
+                      v-else
+                      class="inline-flex rounded-full bg-red-100 px-2 text-xs font-semibold leading-5 text-red-800"
+                    >
+                      Done
+                    </p>
+                  </div>
+                </div>
+                <div class="mt-2 sm:flex sm:justify-between">
+                  <div class="sm:flex">
+                    <p class="flex items-center text-sm text-gray-500">
+                      <component
+                        :is="interests[goal.idInterest - 1].categoryIcon"
+                        :class="[
+                          interests[goal.idInterest - 1].categoryColor,
+                          'mr-1.5 h-5 w-5 flex-shrink-0',
+                        ]"
+                        aria-hidden="true"
+                      />
+                      {{ interests[goal.idInterest - 1].category }}
+                    </p>
+                  </div>
+                  <div
+                    class="mt-2 flex items-center text-sm text-gray-500 sm:mt-0 sm:ml-6 sm:w-1/2"
+                  >
+                    <div
+                      class="w-full bg-gray-200 rounded-full dark:bg-gray-700"
+                    >
                       <div
-                        class="mt-2 flex items-center text-sm text-gray-500 sm:mt-0 sm:ml-6 sm:w-1/2"
+                        class="bg-lime-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full"
+                        :style="
+                          'width: ' + (goal.progress / goal.target) * 100 + '%'
+                        "
                       >
-                        <div
-                          class="w-full bg-gray-200 rounded-full dark:bg-gray-700"
-                        >
-                          <div
-                            class="bg-lime-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full"
-                            :style="
-                              'width: ' +
-                              (goal.progress / goal.target) * 100 +
-                              '%'
-                            "
-                          >
-                            {{
-                              Math.round((goal.progress / goal.target) * 100)
-                            }}%
-                          </div>
-                        </div>
-                      </div>
-                      <div
-                        class="mt-2 flex items-center text-sm text-gray-500 sm:mt-0"
-                      >
-                        <CalendarIcon
-                          class="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
-                          aria-hidden="true"
-                        />
-                        <p>
-                          Until
-                          {{ " " }}
-                          <time :datetime="goal.deadline">{{
-                            dateToString(goal.deadline)
-                          }}</time>
-                        </p>
+                        {{ Math.round((goal.progress / goal.target) * 100) }}%
                       </div>
                     </div>
                   </div>
-                </a>
+                  <div
+                    class="mt-2 flex items-center text-sm text-gray-500 sm:mt-0"
+                  >
+                    <CalendarIcon
+                      class="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
+                      aria-hidden="true"
+                    />
+                    <p>
+                      Until
+                      {{ " " }}
+                      <time :datetime="goal.deadline">{{
+                        dateToString(goal.deadline)
+                      }}</time>
+                    </p>
+                  </div>
+                </div>
               </li>
             </ul>
           </div>
