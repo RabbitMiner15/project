@@ -107,9 +107,16 @@
       <main class="mx-auto max-w-2xl px-4 md:max-w-7xl md:px-8">
         <div class="border-b border-gray-200 pt-24 pb-10">
           <h1 class="text-4xl font-bold tracking-tight text-gray-900">Goals</h1>
-          <p class="mt-4 text-base text-gray-500">
-            See all of the Goals you set yourself!
-          </p>
+          <div class="mt-4 flex justify-between">
+            <p class="text-base text-gray-500">
+              See all of the Goals you set yourself!
+            </p>
+            <button
+              class="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:ring-lime-500"
+            >
+              Add Goal
+            </button>
+          </div>
         </div>
 
         <div class="md:grid md:grid-cols-5 md:gap-2">
@@ -282,7 +289,7 @@ import {
 } from "@heroicons/vue/20/solid";
 import goals from "../goals";
 import interests from "../interests";
-import {daysUntil, dateToString} from "../converter";
+import { daysUntil, dateToString } from "../converter";
 const filters = [
   {
     id: "category",
@@ -302,14 +309,16 @@ const filters = [
     ],
   },
 ];
-const selected= ref([]);
+const selected = ref([]);
 const filter = computed(() => {
-  if(selected.value.length === 0){
+  if (selected.value.length === 0) {
     return goals;
   } else {
-    return goals.filter(goal => selected.value.includes(interests[goal.idInterest-1].category))
+    return goals.filter((goal) =>
+      selected.value.includes(interests[goal.idInterest - 1].category)
+    );
   }
-})
+});
 
 const mobileFiltersOpen = ref(false);
 </script>

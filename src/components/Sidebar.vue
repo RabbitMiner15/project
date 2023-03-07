@@ -37,13 +37,13 @@
           </div>
           <div class="hidden sm:ml-6 sm:flex sm:items-center">
             <button
-              v-if="loggedin"
+              v-if="user.loggedIn"
               type="button"
               class="rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-lime-600 focus:ring-offset-2"
             >
               
             </button>
-            <Menu as="div" class="relative ml-3" v-if="loggedin">
+            <Menu as="div" class="relative ml-3" v-if="user.loggedIn">
               <div>
                 <MenuButton
                   class="flex rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-lime-600 focus:ring-offset-2"
@@ -84,7 +84,7 @@
                   <span class="sr-only">Open user menu</span>
                   <img
                     class="h-8 w-8 rounded-full"
-                    :src="user.imageUrl"
+                    :src="'/'+user.picture+'.png'"
                     alt=""
                   />
                 </MenuButton>
@@ -98,7 +98,7 @@
                 leave-to-class="transform opacity-0 scale-95"
               >
                 <MenuItems
-                  v-if="loggedin"
+                  v-if="user.loggedIn"
                   class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
                 >
                   <MenuItem v-for="item in userNavigation" :key="item.name">
@@ -160,9 +160,9 @@
           >
         </div>
         <div class="border-t border-gray-200 pt-4 pb-3">
-          <div class="flex items-center px-4" v-if="loggedin">
+          <div class="flex items-center px-4" v-if="user.loggedIn">
             <div class="flex-shrink-0">
-              <img class="h-10 w-10 rounded-full" :src="user.imageUrl" alt="" />
+              <img class="h-10 w-10 rounded-full" :src="'/'+user.picture+'.png'" alt="" />
             </div>
             <div class="ml-3">
               <div class="text-base font-medium text-gray-800">
@@ -177,7 +177,7 @@
               <BellIcon class="h-6 w-6" aria-hidden="true" />
             </button>
           </div>
-          <div v-if="loggedin" class="mt-3 space-y-1">
+          <div v-if="user.loggedIn" class="mt-3 space-y-1">
             <router-link
               v-for="item in userNavigation"
               :key="item.name"
@@ -222,12 +222,10 @@ import {
   MenuItems,
 } from "@headlessui/vue";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/vue/24/outline";
+import user from "../user";
 
 const loggedin = true;
-const user = {
-  name: "Martin Kremer",
-  imageUrl: "/2.png",
-};
+
 const navigation = [
   { name: "Home", href: "/", current: true },
   { name: "Goals", href: "/goals", current: false },
