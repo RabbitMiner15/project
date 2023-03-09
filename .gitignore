@@ -16,6 +16,8 @@ coverage
 package-lock.json
 .env
 
+/public/dbConnection.php
+
 /cypress/videos/
 /cypress/screenshots/
 

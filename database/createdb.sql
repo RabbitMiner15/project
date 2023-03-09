@@ -8,12 +8,12 @@ DROP TABLE IF EXISTS tblUser;
 
 CREATE TABLE tblUser(
   idUser INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-  dtUsername VARCHAR(255) NOT NULL UNIQUE CHECK (dtUsername <> ''),
-  dtEmail VARCHAR(255) NOT NULL UNIQUE CHECK (dtEmail <> ''),
+  dtUsername VARCHAR(255) NOT NULL UNIQUE,
+  dtEmail VARCHAR(255) NOT NULL UNIQUE,
   dtPassword TEXT NOT NULL,
   dtPicture INT UNSIGNED DEFAULT 1,
   dtGroupInvites TINYINT DEFAULT 1,
-  dtTemperature ENUM('Celsius','Fahrenheit') DEFAULT 'Celsius',
+  dtTemperature ENUM('°C','Fahrenheit') DEFAULT '°C',
   dtDistance ENUM('km','mi') DEFAULT 'km',
   dtVolume ENUM('l','gal') DEFAULT 'l',
   dtWeight ENUM('kg','pound') DEFAULT 'kg',
@@ -28,10 +28,10 @@ DROP TABLE IF EXISTS tblInterest;
 
 CREATE TABLE tblInterest(
   idInterest INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-  dtInterestName VARCHAR(255) NOT NULL CHECK (dtInterestName <> ''),
+  dtInterestName VARCHAR(255) NOT NULL,
   dtCategory ENUM('Health','Tracker','Fitness') NOT NULL,
-  dtUnit ENUM('h','kcal','bpm','l','kg','Celsius','d'),
-  dtFitbit TINYINT DEFAULT 0
+  dtUnit ENUM('h','kcal','bpm','l','kg','°C','d'),
+  dtOrigin VARCHAR(255) NOT NULL
 );
 
 DROP TABLE IF EXISTS tblUserInterest;
@@ -59,8 +59,8 @@ DROP TABLE IF EXISTS tblNotification;
 CREATE TABLE tblNotification(
   idNotification INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   fiUser INT UNSIGNED NOT NULL,
-  dtTitle VARCHAR(255) NOT NULL CHECK (dtTitle <> ''),
-  dtText VARCHAR(255) NOT NULL CHECK (dtText <> ''),
+  dtTitle VARCHAR(255) NOT NULL,
+  dtText VARCHAR(255) NOT NULL,
   dtSeen TINYINT DEFAULT 0,
   dtVisible TINYINT DEFAULT 1,
   dtTimestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -76,10 +76,10 @@ DROP TABLE IF EXISTS tblAchievements;
 CREATE TABLE tblAchievement(
   idAchievement INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   fiInterest INT UNSIGNED NOT NULL,
-  dtTitle VARCHAR(255) NOT NULL CHECK (dtTitle <> ''),
-  dtText VARCHAR(255) NOT NULL CHECK (dtText <> ''),
+  dtTitle VARCHAR(255) NOT NULL,
+  dtText VARCHAR(255) NOT NULL,
   dtPicture INT UNSIGNED DEFAULT 100,
-  dtCondition VARCHAR(255) NOT NULL CHECK (dtCondition <> ''),
+  dtCondition VARCHAR(255) NOT NULL,
 
   CONSTRAINT fiInterest2
     FOREIGN KEY (fiInterest) REFERENCES tblInterest (idInterest)
@@ -113,8 +113,8 @@ DROP TABLE IF EXISTS tblGroup;
 CREATE TABLE tblGroup(
   idGroup INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   fiUser INT UNSIGNED NOT NULL,
-  dtGroupName VARCHAR(255) NOT NULL CHECK (dtGroupName <> ''),
-  dtDescription VARCHAR(255) NOT NULL CHECK (dtDescription <> ''),
+  dtGroupName VARCHAR(255) NOT NULL,
+  dtDescription VARCHAR(255) NOT NULL,
 
   CONSTRAINT fiUser4
     FOREIGN KEY (fiUser) REFERENCES tblUser (idUser)
@@ -188,79 +188,19 @@ CREATE TABLE tblUserGroup(
   PRIMARY KEY (fiUser, fiGroup)
 );
 
-INSERT INTO tblInterest (dtInterestName,dtCategory,dtUnit,dtFitbit) VALUES
-('Sleep','Health','h',1),
-('Nutrition','Health','kcal',0),
-('Heart Rate','Health','bpm',1),
-('Water','Health','l',0),
-('Weight','Health','kg',0),
-('Temperature','Health','Celsius',1),
-('Meat','Tracker','d',0),
-('Alcohol','Tracker','d',0),
-('Sugar','Tracker','d',0),
-('Vegan','Tracker','d',0),
-('Smoke','Tracker','d',0),
-('Activity','Fitness','h',1),
-('Distance','Fitness','km',1);
-
-DROP PROCEDURE IF EXISTS spSignUp;
-
-DELIMITER $$
-
-CREATE PROCEDURE spSignUp(IN inJSON JSON, OUT outJSON JSON)
-BEGIN
-  DECLARE vJSONSCHEMA JSON;
-  DECLARE fiUser INT;
-  DECLARE vUser JSON;
-
-  DECLARE EXIT HANDLER FOR 1062
-	BEGIN
- 	  SET outJSON = '{"code": 400, "label": "Duplicate Key", "message": "This user already exists"}';
-	END;
-
-  DECLARE EXIT HANDLER FOR SQLEXCEPTION
-	BEGIN
-		SET outJSON = '{"code": 500,"label": "Internal Server Error","message": "The procedure has encountered a situation it does not know how to handle."}';
-	END;
-
-	DECLARE EXIT HANDLER FOR 1406
-	BEGIN
- 	  SET outJSON = '{"code": 400, "label": "Bad Request", "message": "Input is too long"}';
-	END;
-    
-  DECLARE EXIT HANDLER FOR 3819
-	BEGIN
- 	  SET outJSON = '{"code": 400, "label": "Bad Request", "message": "Input cannot be empty"}';
-	END;
-
-  SET vJSONSchema = '{
-		"type":"object",
-		"properties": {
-      "username": {"type":"string"},
-      "email": {"type":"string"},
-      "password": {"type":"string"},
-      "picture": {"type":"number"}},
-		"required": ["username","email","password","picture"]
-	}';
-  IF NOT (JSON_VALID(inJSON)) THEN
-		SET outJSON = '{
-			"code": 400,
-          "label": "Bad Request",
-          "message": "The JSON string provided is not valid."
-        }';
-	ELSE
-		INSERT INTO tblUser (dtUsername, dtEmail, dtPassword,dtPicture) VALUES 
-			(JSON_UNQUOTE(JSON_EXTRACT(inJSON,'$.username')),JSON_UNQUOTE(JSON_EXTRACT(inJSON,'$.email')),JSON_UNQUOTE(JSON_EXTRACT(inJSON,'$.password')),JSON_UNQUOTE(JSON_EXTRACT(inJSON,'$.picture')));
-    SELECT LAST_INSERT_ID() INTO fiUser;
-    SELECT JSON_OBJECT('idUser',idUser, 'username', dtUsername, 'email', dtEmail, 'picture', dtPicture, 'groupInvites', dtGroupInvites, 'temperature', dtTemperature, 'distance', dtDistance, 'volume', dtVolume, 'weight', dtWeight, 'summary', dtSummary, 'websiteNoti', dtWebsiteNoti, 'emailNoti', dtEmailNoti, 'discordNoti', dtDiscordNoti, 'private', dtPrivate)INTO vUser FROM tblUser WHERE idUser = fiUser ;
-    SET outJSON = CONCAT('{
-			"code": 200,
-			"label": "OK",
-			"message": ',vUser,
-    '}');
-	END IF;
-END$$
-
-DELIMITER ;
+INSERT INTO tblInterest (dtInterestName,dtCategory,dtUnit,dtOrigin) VALUES
+('Sleep','Health','h','M | F'),
+('Nutrition','Health','kcal','M'),
+('Heart Rate','Health','bpm','M | F'),
+('Water','Health','l','M'),
+('Weight','Health','kg','M'),
+('Temperature','Health','°C','M | F'),
+('Meat Free','Tracker','d','M'),
+('Alcohol Free','Tracker','d','M'),
+('Sugar Free','Tracker','d','M'),
+('Vegan','Tracker','d','M'),
+('Smoke Free','Tracker','d','M'),
+('Activity','Fitness','h','M | F'),
+('Distance','Fitness','km','M | F');
 
 

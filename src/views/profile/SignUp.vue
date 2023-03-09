@@ -124,8 +124,8 @@
                 />
                 <img
                   class="h-10 w-10 rounded-full cursor-pointer"
-                  :src="`/${picture}.png`"
-                  :key="picture"
+                  :src="`/${form.picture}.png`"
+                  :key="form.picture"
                   alt=""
                   @click="open = true"
                 />
@@ -176,10 +176,10 @@
                                 :key="imageNumber"
                                 :src="`/${imageNumber}.png`"
                                 class="h-10 w-10 rounded-full cursor-pointer transition-all duration-300 ease-in-out transform hover:scale-105"
-                                @click="picture = imageNumber"
+                                @click="form.picture = imageNumber"
                                 :class="{
                                   'border-2 border-lime-600':
-                                    picture === imageNumber,
+                                    form.picture === imageNumber,
                                 }"
                               />
                             </div>
@@ -313,9 +313,10 @@
                     <input
                       :id="`interest-${interest.id}`"
                       :name="`interest-${interest.id}`"
+                      :value="interest.id"
                       type="checkbox"
                       class="h-4 w-4 rounded border-gray-300 text-lime-600 focus:ring-lime-500"
-                      v-model="interest.check"
+                      v-model="form.fiInterest"
                     />
                   </div>
                 </div>
@@ -344,9 +345,10 @@
                     <input
                       :id="`interest-${interest.id}`"
                       :name="`interest-${interest.id}`"
+                      :value="interest.id"
                       type="checkbox"
                       class="h-4 w-4 rounded border-gray-300 text-lime-600 focus:ring-lime-500"
-                      v-model="interest.check"
+                      v-model="form.fiInterest"
                     />
                   </div>
                 </div>
@@ -375,9 +377,10 @@
                     <input
                       :id="`interest-${interest.id}`"
                       :name="`interest-${interest.id}`"
+                      :value="interest.id"
                       type="checkbox"
                       class="h-4 w-4 rounded border-gray-300 text-lime-600 focus:ring-lime-500"
-                      v-model="interest.check"
+                      v-model="form.fiInterest"
                     />
                   </div>
                 </div>
@@ -409,6 +412,8 @@
 import { CheckIcon } from "@heroicons/vue/24/solid";
 
 import { ref } from "vue";
+import axios from "axios";
+import { useRouter } from "vue-router";
 import {
   Dialog,
   DialogPanel,
@@ -417,6 +422,9 @@ import {
   TransitionRoot,
 } from "@headlessui/vue";
 import interests from "../../interests";
+import { useToast } from "vue-toastification";
+const router = useRouter();
+const toast = useToast();
 const toStep1 = () => {
   currentStep.value = 1;
   steps[0].status = "current";
@@ -437,6 +445,9 @@ const toStep3 = () => {
   steps[1].status = "complete";
   steps[2].status = "current";
 };
+let currentStep = ref(1);
+
+const open = ref(false);
 let steps = [
   { id: "01", name: "Information", function: toStep1, status: "current" },
   {
@@ -477,13 +488,22 @@ const form = ref({
   username: "",
   email: "",
   password: "",
+  picture: 1,
+  fiInterest: [],
 });
 
-let currentStep = ref(1);
-
-let picture = ref(1);
-
-const open = ref(false);
-
-const onSubmit = async () => {};
+const onSubmit = async () => {
+  try {
+    const response = await axios.post("/signup.php", form.value);
+    if (response.data.status == "Success") {
+      toast.success(response.data.message);
+      router.push("/signin");
+    } else {
+      toast.error(response.data.message);
+      toStep1();
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
 </script>

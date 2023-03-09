@@ -78,18 +78,33 @@
 </template>
 <script setup>
 import { ref } from "vue";
+import { useRouter } from "vue-router";
 import axios from "axios";
+import { useToast } from "vue-toastification";
+import { useUserStore } from "../../store/user";
+const { setUser } = useUserStore();
+const toast = useToast();
 const form = ref({
   email: "",
   password: "",
 });
+const router = useRouter();
 
 const onSubmit = async () => {
-  await axios.post("https://martinkremer.com/signin.php",{
-    email: form.value.email,
-    password: form.value.password
-  }).then(response =>{
-    console.log(response);
-  })
+  try {
+    const response = await axios.post("/signin.php", form.value);
+    console.log(response.data);
+    if (response.data.status == "Success") {
+      toast.success(
+        response.data.message + " " + response.data.data.dtUsername
+      );
+      setUser(response.data.data);
+      router.push("/");
+    } else {
+      toast.error(response.data.message);
+    }
+  } catch (error) {
+    console.error(error);
+  }
 };
 </script>

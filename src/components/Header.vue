@@ -37,19 +37,17 @@
           </div>
           <div class="hidden sm:ml-6 sm:flex sm:items-center">
             <button
-              v-if="user.loggedIn"
+              v-if="userState.user"
               type="button"
               class="rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-lime-600 focus:ring-offset-2"
-            >
-              
-            </button>
-            <Menu as="div" class="relative ml-3" v-if="user.loggedIn">
+            ></button>
+            <Menu as="div" class="relative ml-3" v-if="userState.user">
               <div>
                 <MenuButton
                   class="flex rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-lime-600 focus:ring-offset-2"
                 >
-                <span class="sr-only">View notifications</span>
-              <BellIcon class="h-6 w-6" aria-hidden="true" />
+                  <span class="sr-only">View notifications</span>
+                  <BellIcon class="h-6 w-6" aria-hidden="true" />
                 </MenuButton>
               </div>
               <transition
@@ -64,14 +62,11 @@
                   class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
                 >
                   <MenuItem v-for="item in notifications" :key="item.name">
-                    <p
-                      
-                      class="['', 'block px-4 py-2 text-sm text-gray-700']"
-                      >{{ item.name }}</p
-                    >
+                    <p class="['', 'block px-4 py-2 text-sm text-gray-700']">
+                      {{ item.name }}
+                    </p>
                   </MenuItem>
                 </MenuItems>
-                
               </transition>
             </Menu>
 
@@ -84,7 +79,7 @@
                   <span class="sr-only">Open user menu</span>
                   <img
                     class="h-8 w-8 rounded-full"
-                    :src="'/'+user.picture+'.png'"
+                    :src="'/' + user.picture + '.png'"
                     alt=""
                   />
                 </MenuButton>
@@ -98,14 +93,22 @@
                 leave-to-class="transform opacity-0 scale-95"
               >
                 <MenuItems
-                  v-if="user.loggedIn"
+                  v-if="userState.user"
                   class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
                 >
                   <MenuItem v-for="item in userNavigation" :key="item.name">
                     <router-link
                       :to="item.href"
-                      :class="['', 'block px-4 py-2 text-sm text-gray-700']"
+                      class="block px-4 py-2 text-sm text-gray-700"
                       >{{ item.name }}</router-link
+                    >
+                  </MenuItem>
+                  <MenuItem>
+                    <a
+                      @click="signOut()"
+                      key="signOut"
+                      class="block px-4 py-2 text-sm text-gray-700 cursor-pointer"
+                      >Sign Out</a
                     >
                   </MenuItem>
                 </MenuItems>
@@ -160,9 +163,13 @@
           >
         </div>
         <div class="border-t border-gray-200 pt-4 pb-3">
-          <div class="flex items-center px-4" v-if="user.loggedIn">
+          <div class="flex items-center px-4" v-if="userState.user">
             <div class="flex-shrink-0">
-              <img class="h-10 w-10 rounded-full" :src="'/'+user.picture+'.png'" alt="" />
+              <img
+                class="h-10 w-10 rounded-full"
+                :src="'/' + user.picture + '.png'"
+                alt=""
+              />
             </div>
             <div class="ml-3">
               <div class="text-base font-medium text-gray-800">
@@ -177,7 +184,7 @@
               <BellIcon class="h-6 w-6" aria-hidden="true" />
             </button>
           </div>
-          <div v-if="user.loggedIn" class="mt-3 space-y-1">
+          <div v-if="userState.user" class="mt-3 space-y-1">
             <router-link
               v-for="item in userNavigation"
               :key="item.name"
@@ -186,6 +193,13 @@
               class="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800"
               >{{ item.name }}</router-link
             >
+            <div
+              @click="signOut()"
+              key="signOut"
+              class="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800"
+            >
+              Sign Out
+            </div>
           </div>
           <div v-else class="mt-3 space-y-1">
             <router-link
@@ -223,7 +237,14 @@ import {
 } from "@headlessui/vue";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/vue/24/outline";
 import user from "../user";
-
+import { useUserStore } from "../store/user";
+import { useToast } from "vue-toastification";
+const toast = useToast();
+const userState = useUserStore();
+const signOut = () => {
+  toast.success("Logged out");
+  userState.setUser(null);
+};
 const navigation = [
   { name: "Home", href: "/", current: true },
   { name: "Goals", href: "/goals", current: false },
@@ -233,15 +254,13 @@ const navigation = [
 const userNavigation = [
   { name: "Your Profile", href: "/profile" },
   { name: "Settings", href: "/settings" },
-  { name: "Sign out", href: "/signout" },
 ];
 const loggedOutNavigation = [
   { name: "Sign In", href: "/signin" },
   { name: "Sign Up", href: "/signup" },
 ];
 const notifications = [
-  { name: "Here is your weekly report"},
-  { name: "Added to new group"},
+  { name: "Here is your weekly report" },
+  { name: "Added to new group" },
 ];
-
 </script>

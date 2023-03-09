@@ -2,6 +2,6 @@ const user = {
   id: 1,
   name: "Martin",
   picture: 2,
-  loggedIn: true
+  loggedIn: false
 };
 export default user;

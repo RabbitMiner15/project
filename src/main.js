@@ -6,6 +6,11 @@ import "./assets/tailwind.css";
 import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
 
+import { createPinia } from "pinia";
+import piniaPluginPersistedState from "pinia-plugin-persistedstate";
+const pinia = createPinia();
+pinia.use(piniaPluginPersistedState);
+
 const options = {
   timeout: 3000,
   position: "bottom-center",
@@ -25,4 +30,5 @@ const options = {
 const app = createApp(App);
 app.use(router);
 app.use(Toast, options);
+app.use(pinia);
 app.mount("#app");
