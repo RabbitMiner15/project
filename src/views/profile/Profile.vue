@@ -595,6 +595,8 @@ import {
   TransitionChild,
   TransitionRoot,
 } from "@headlessui/vue";
+import { useUserStore } from "../../store/user";
+const userState = useUserStore();
 
 const open = ref(false);
 const user = users[0];

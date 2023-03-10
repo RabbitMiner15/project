@@ -28,7 +28,7 @@
                           <dd
                             class="mt-1 flex text-sm text-gray-900 sm:col-span-2 sm:mt-0"
                           >
-                            <span class="flex-grow">{{ user.name }}</span>
+                            <span class="flex-grow">{{ userState.user.dtUsername }}</span>
                             <span class="ml-4 flex-shrink-0">
                               <button
                                 type="button"
@@ -51,7 +51,7 @@
                             <span class="flex-grow">
                               <img
                                 class="h-8 w-8 rounded-full"
-                                :src="'/' + user.picture + '.png'"
+                                :src="'/' + userState.user.dtPicture + '.png'"
                                 alt=""
                               />
                             </span>
@@ -76,7 +76,7 @@
                           <dd
                             class="mt-1 flex text-sm text-gray-900 sm:col-span-2 sm:mt-0"
                           >
-                            <span class="flex-grow">{{ user.email }}</span>
+                            <span class="flex-grow">{{ userState.user.dtEmail }}</span>
                             <span class="ml-4 flex-shrink-0">
                               <button
                                 type="button"
@@ -226,9 +226,9 @@
 
 <script setup>
 import Sidebar from "../../components/Sidebar.vue";
-import users from "../../users";
 import { ref } from "vue";
 import { Switch, SwitchGroup, SwitchLabel } from "@headlessui/vue";
-const user = users[0];
+import { useUserStore } from "../../store/user";
+const userState = useUserStore();
 const privateAccount = ref(true);
 </script>

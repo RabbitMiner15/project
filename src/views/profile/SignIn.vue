@@ -93,7 +93,6 @@ const router = useRouter();
 const onSubmit = async () => {
   try {
     const response = await axios.post("/signin.php", form.value);
-    console.log(response.data);
     if (response.data.status == "Success") {
       toast.success(
         response.data.message + " " + response.data.data.dtUsername

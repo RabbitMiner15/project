@@ -115,13 +115,13 @@
             </p>
             <div class="space-x-2">
               <button
-                v-if="group.idUser === user.id"
+                v-if="group.idUser === userState.user.idUser"
                 class="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:ring-lime-500"
               >
                 Manage Group
               </button>
               <button
-                v-if="group.idUser === user.id"
+                v-if="group.idUser === userState.user.idUser"
                 class="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:ring-lime-500"
               >
                 Add Group Goal
@@ -353,7 +353,8 @@ import interests from "../interests";
 import { daysUntil, dateToString } from "../converter";
 import goals from "../goals";
 import { useRoute } from "vue-router";
-import user from "../user";
+import { useUserStore } from "../store/user";
+const userState = useUserStore();
 const route = useRoute();
 const groupId = computed(() => {
   const matches = route.path.match(/^\/groups\/(\d+)/);

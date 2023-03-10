@@ -315,12 +315,13 @@ import { XMarkIcon } from "@heroicons/vue/24/outline";
 import { ChevronDownIcon, PlusIcon } from "@heroicons/vue/20/solid";
 import invites from "../invites";
 import groups from "../groups";
-import user from "../user";
+import { useUserStore } from "../store/user";
+const userState = useUserStore();
 const filters = [
   {
     id: "filter",
     name: "Filter",
-    options: [{ value: user.id, label: "My Groups" }],
+    options: [{ value: userState.user.idUser, label: "My Groups" }],
   },
 ];
 const selected = ref([]);

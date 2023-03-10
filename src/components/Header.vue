@@ -78,8 +78,15 @@
                 >
                   <span class="sr-only">Open user menu</span>
                   <img
+                    v-if="userState.user"
                     class="h-8 w-8 rounded-full"
-                    :src="'/' + user.picture + '.png'"
+                    :src="'/' + userState.user.dtPicture + '.png'"
+                    alt=""
+                  />
+                  <img
+                    v-else
+                    class="h-8 w-8 rounded-full"
+                    :src="'/' + 5 + '.png'"
                     alt=""
                   />
                 </MenuButton>
@@ -167,13 +174,13 @@
             <div class="flex-shrink-0">
               <img
                 class="h-10 w-10 rounded-full"
-                :src="'/' + user.picture + '.png'"
+                :src="'/' + userState.user.dtPicture + '.png'"
                 alt=""
               />
             </div>
             <div class="ml-3">
               <div class="text-base font-medium text-gray-800">
-                {{ user.name }}
+                {{ userState.user.dtUsername }}
               </div>
             </div>
             <button
@@ -236,14 +243,16 @@ import {
   MenuItems,
 } from "@headlessui/vue";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/vue/24/outline";
-import user from "../user";
 import { useUserStore } from "../store/user";
 import { useToast } from "vue-toastification";
+import { useRouter } from "vue-router";
 const toast = useToast();
 const userState = useUserStore();
+const router = useRouter();
 const signOut = () => {
   toast.success("Logged out");
   userState.setUser(null);
+  router.push("/");
 };
 const navigation = [
   { name: "Home", href: "/", current: true },
