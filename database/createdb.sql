@@ -130,7 +130,8 @@ CREATE TABLE tblGoal(
   fiGroup INT UNSIGNED,
   fiInterest INT UNSIGNED NOT NULL,
   dtTarget INT NOT NULL,
-  dtDeadline DATE NOt NULL,
+  dtDeadline DATE NOT NULL,
+  dtCreationDate DATE DEFAULT CURRENT_DATE
 
   CONSTRAINT fiUser5
     FOREIGN KEY (fiUser) REFERENCES tblUser (idUser)

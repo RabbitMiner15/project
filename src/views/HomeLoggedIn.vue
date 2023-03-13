@@ -36,11 +36,11 @@
               class="grid grid-cols-1 divide-y divide-gray-200 border-t border-gray-200 bg-gray-50 sm:grid-cols-3 sm:divide-y-0 sm:divide-x"
             >
               <div
-                v-for="stat in stats"
+                v-for="stat in stats.slice(0, 3)"
                 :key="stat.label"
                 class="px-6 py-5 text-center text-sm font-medium"
               >
-                <span class="text-gray-900">{{ stat.value }}</span>
+                <span class="text-gray-900">{{ stat.value.length }}</span>
                 {{ " " }}
                 <span class="text-gray-600">{{ stat.label }}</span>
               </div>
@@ -54,15 +54,17 @@
             class="divide-y divide-gray-200 overflow-hidden rounded-lg bg-gray-200 shadow sm:grid sm:grid-cols-2 sm:gap-px sm:divide-y-0"
           >
             <div
-              v-for="(action, actionIdx) in actions"
-              :key="action.interest.name"
+              v-for="(interest, index) in userState.user.interests"
+              :key="interest"
               :class="[
-                actionIdx === 0
+                index === 0
                   ? 'rounded-tl-lg rounded-tr-lg sm:rounded-tr-none'
                   : '',
-                actionIdx === 1 ? 'sm:rounded-tr-lg' : '',
-                actionIdx === actions.length - 2 ? 'sm:rounded-bl-lg' : '',
-                actionIdx === actions.length - 1
+                index === 1 ? 'sm:rounded-tr-lg' : '',
+                index === userState.user.interests.length - 2
+                  ? 'sm:rounded-bl-lg'
+                  : '',
+                index === userState.user.interests.length - 1
                   ? 'rounded-bl-lg rounded-br-lg sm:rounded-bl-none'
                   : '',
                 'group relative bg-white p-6 focus-within:ring-2 focus-within:ring-inset focus-within:ring-lime-500',
@@ -71,13 +73,13 @@
               <div>
                 <span
                   :class="[
-                    action.interest.bg,
-                    action.interest.fg,
+                    interests[interest - 1].bg,
+                    interests[interest - 1].fg,
                     'inline-flex rounded-lg p-3 ring-4 ring-white',
                   ]"
                 >
                   <component
-                    :is="action.interest.icon"
+                    :is="interests[interest - 1].icon"
                     class="h-6 w-6"
                     aria-hidden="true"
                   />
@@ -91,13 +93,12 @@
                       class="absolute inset-0 cursor-pointer"
                       aria-hidden="true"
                     />
-                    {{ action.interest.name }}: {{ action.progress
-                    }}{{ action.interest.unit }}
+                    {{ interests[interest - 1].name }}:
+                    {{ getProgress(interest, stats[3].progress) }}
+                    {{ interests[interest - 1].unit }}
                   </div>
                 </h3>
-                <p class="mt-2 text-sm text-gray-500">
-                  {{ action.feedback }}
-                </p>
+                <p class="mt-2 text-sm text-gray-500">TODO FEEDBACK</p>
               </div>
               <span
                 class="pointer-events-none absolute top-6 right-6 text-gray-300 group-hover:text-lime-400"
@@ -125,16 +126,17 @@
               <div class="mt-6 flow-root">
                 <ul role="list" class="-my-5 divide-y divide-gray-200">
                   <li
-                    v-for="goal in goals.slice(0, 3)"
-                    :key="goal.id"
+                    v-for="goal in stats[1].value"
+                    :key="goal.idGoal"
                     class="py-5"
                   >
                     <div class="relative">
                       <h3 class="text-sm font-semibold text-gray-800">
                         <span class="absolute inset-0" aria-hidden="true" />
-                        {{ goal.target }}{{ interests[goal.idInterest - 1].unit
-                        }}{{ " " }}{{ interests[goal.idInterest - 1].name
-                        }}{{ " in " }}{{ daysUntil(goal.deadline) }}
+                        {{ goal.dtTarget
+                        }}{{ interests[goal.fiInterest - 1].unit }}{{ " "
+                        }}{{ interests[goal.fiInterest - 1].name }}{{ " in "
+                        }}{{ daysUntil(goal.dtDeadline) }}
                         {{ "days" }}
                       </h3>
                       <div class="mt-1 text-sm text-gray-600 line-clamp-2">
@@ -143,15 +145,9 @@
                         >
                           <div
                             class="bg-lime-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full"
-                            :style="
-                              'width: ' +
-                              (goal.progress / goal.target) * 100 +
-                              '%'
-                            "
+                            :style="'width: ' + (1 / goal.dtTarget) * 100 + '%'"
                           >
-                            {{
-                              Math.round((goal.progress / goal.target) * 100)
-                            }}%
+                            {{ Math.round((1 / goal.dtTarget) * 100) }}%
                           </div>
                         </div>
                       </div>
@@ -178,7 +174,11 @@
               </h2>
               <div class="mt-6 flow-root">
                 <ul role="list" class="-my-5 divide-y divide-gray-200">
-                  <li v-for="group in groups" :key="group.id" class="py-4">
+                  <li
+                    v-for="group in stats[2].value"
+                    :key="group.idGroup"
+                    class="py-4"
+                  >
                     <div class="flex -space-x-3 overflow-hidden">
                       <div
                         v-for="(member, index) in group.members.slice(0, 3)"
@@ -187,29 +187,31 @@
                       >
                         <img
                           class="inline-block h-8 w-8 rounded-full"
-                          :src="'/' + member.picture + '.png'"
+                          :src="'/' + member.dtPicture + '.png'"
                           alt="grouppicture"
                         />
                       </div>
                       <div
                         v-if="group.members.length > 3"
                         class="flex items-center text-sm font font-medium text-gray-500 pl-4 bg"
-                      ></div>
-                      <span
-                        class="inline-block h-8 w-8 pt-0.5 text-center rounded-full border-black bg-gray-300"
-                        >+{{ group.members.length - 3 }}</span
                       >
+                        <span
+                          class="inline-block h-8 w-8 pt-0.5 text-center rounded-full border-black bg-gray-300"
+                          >+{{ group.members.length - 3 }}</span
+                        >
+                      </div>
+
                       <div class="min-w-0 flex-1 pl-5">
                         <p class="truncate text-sm font-medium text-gray-900">
-                          {{ group.groupName }}
+                          {{ group.dtGroupName }}
                         </p>
                         <p class="truncate text-sm text-gray-500">
-                          {{ group.description }}
+                          {{ group.dtDescription }}
                         </p>
                       </div>
                       <div>
                         <router-link
-                          :to="'/groups/' + group.id"
+                          :to="'/groups/' + group.idGroup"
                           class="inline-flex items-center rounded-full border border-gray-300 bg-white px-2.5 py-0.5 text-sm font-medium leading-5 text-gray-700 shadow-sm hover:bg-gray-50"
                           >View</router-link
                         >
@@ -236,86 +238,19 @@
 <script setup>
 import { PlusIcon } from "@heroicons/vue/24/outline";
 import interests from "../interests.js";
-import goals from "../goals.js";
-import groups from "../groups";
-import { daysUntil } from "../converter";
+import { daysUntil, getProgress } from "../converter";
 import { useUserStore } from "../store/user";
 import axios from "axios";
 import { ref } from "vue";
 const userState = useUserStore();
-const actions = [
-  {
-    interest: interests[0],
-    progress: 8,
-    feedback: "Keep on going like this",
-  },
-  {
-    interest: interests[1],
-    progress: 2000,
-    feedback: "Slight deficit for now",
-  },
-  {
-    interest: interests[2],
-    progress: 85,
-    feedback: "Slightly above average",
-  },
-  {
-    interest: interests[3],
-    progress: 1.5,
-    feedback: "Not far from the ideal amount",
-  },
-  {
-    interest: interests[4],
-    progress: 80,
-    feedback: "Good",
-  },
-  {
-    interest: interests[5],
-    progress: 37,
-    feedback: "Average",
-  },
-  {
-    interest: interests[6],
-    progress: 10,
-    feedback: "Good work on living without meat",
-  },
-  {
-    interest: interests[7],
-    progress: 10,
-    feedback: "Almost two weeks",
-  },
-  {
-    interest: interests[8],
-    progress: 50,
-    feedback: "Who needs Sugar?",
-  },
-  {
-    interest: interests[9],
-    progress: 60,
-    feedback: "Feeling better, right?",
-  },
-  {
-    interest: interests[10],
-    progress: 85,
-    feedback: "Nice work",
-  },
-  {
-    interest: interests[11],
-    progress: 4,
-    feedback: "Excellent work, on keeping yourself busy",
-  },
-  {
-    interest: interests[12],
-    progress: 2,
-    feedback: "A bit more, could be good.",
-  },
-];
+
 const stats = ref([]);
 axios
   .post("/getUserStats.php", {
     idUser: userState.user.idUser,
   })
   .then((response) => {
+    console.log(response.data);
     stats.value = response.data;
   })
   .catch((error) => {
