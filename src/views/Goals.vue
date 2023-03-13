@@ -175,27 +175,27 @@
             <ul role="list">
               <li
                 v-for="goal in filter"
-                :key="goal.id"
-                class="px-4 py-4 sm:px-6 bg-white border shadow-sm my-3 sm:rounded-md "
+                :key="goal.idGoal"
+                class="px-4 py-4 sm:px-6 bg-white border shadow-sm my-3 sm:rounded-md"
               >
                 <div class="flex items-center justify-between">
                   <div class="flex flex-row">
                     <p class="truncate text-sm font-medium text-lime-600">
-                      {{ goal.target }}{{ interests[goal.idInterest - 1].unit
-                      }}{{ " " }}{{ interests[goal.idInterest - 1].name }}&nbsp;
+                      {{ goal.dtTarget }}{{ interests[goal.fiInterest - 1].unit
+                      }}{{ " " }}{{ interests[goal.fiInterest - 1].name }}&nbsp;
                     </p>
 
                     <p
-                      v-if="daysUntil(goal.deadline) > 0"
+                      v-if="daysUntil(goal.dtDeadline) > 0"
                       class="truncate text-sm font-medium text-lime-600"
                     >
-                      {{ "in " }}{{ daysUntil(goal.deadline) }}{{ " days" }}
+                      {{ "in " }}{{ daysUntil(goal.dtDeadline) }}{{ " days" }}
                     </p>
                   </div>
 
                   <div class="ml-2 flex flex-shrink-0">
                     <p
-                      v-if="daysUntil(goal.deadline) > 0"
+                      v-if="daysUntil(goal.dtDeadline) > 0"
                       class="inline-flex rounded-full bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800"
                     >
                       Ongoing
@@ -212,14 +212,14 @@
                   <div class="sm:flex">
                     <p class="flex items-center text-sm text-gray-500">
                       <component
-                        :is="interests[goal.idInterest - 1].categoryIcon"
+                        :is="interests[goal.fiInterest - 1].categoryIcon"
                         :class="[
-                          interests[goal.idInterest - 1].categoryColor,
+                          interests[goal.fiInterest - 1].categoryColor,
                           'mr-1.5 h-5 w-5 flex-shrink-0',
                         ]"
                         aria-hidden="true"
                       />
-                      {{ interests[goal.idInterest - 1].category }}
+                      {{ interests[goal.fiInterest - 1].category }}
                     </p>
                   </div>
                   <div
@@ -231,10 +231,46 @@
                       <div
                         class="bg-lime-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full"
                         :style="
-                          'width: ' + (goal.progress / goal.target) * 100 + '%'
+                          'width: ' +
+                          (getProgress(
+                            goal.fiInterest,
+                            goals[1].progress,
+                            goal.dtCreationDate,
+                            goal.dtDeadline
+                          ) > goal.dtTarget
+                            ? 100
+                            : (getProgress(
+                                goal.fiInterest,
+                                goals[1].progress,
+                                goal.dtCreationDate,
+                                goal.dtDeadline
+                              ) /
+                                goal.dtTarget) *
+                              100) +
+                          '%'
                         "
                       >
-                        {{ Math.round((goal.progress / goal.target) * 100) }}%
+                        {{
+                          Math.round(
+                            getProgress(
+                              goal.fiInterest,
+                              goals[1].progress,
+                              goal.dtCreationDate,
+                              goal.dtDeadline
+                            )
+                          ) > goal.dtTarget
+                            ? 100
+                            : Math.round(
+                                (getProgress(
+                                  goal.fiInterest,
+                                  goals[1].progress,
+                                  goal.dtCreationDate,
+                                  goal.dtDeadline
+                                ) /
+                                  goal.dtTarget) *
+                                  100
+                              )
+                        }}%
                       </div>
                     </div>
                   </div>
@@ -248,8 +284,8 @@
                     <p>
                       Until
                       {{ " " }}
-                      <time :datetime="goal.deadline">{{
-                        dateToString(goal.deadline)
+                      <time :datetime="goal.dtDeadline">{{
+                        dateToString(goal.dtDeadline)
                       }}</time>
                     </p>
                   </div>
@@ -265,6 +301,7 @@
 
 <script setup>
 import { ref, computed } from "vue";
+import axios from "axios";
 import {
   Dialog,
   DialogPanel,
@@ -280,9 +317,22 @@ import {
   PlusIcon,
   CalendarIcon,
 } from "@heroicons/vue/20/solid";
-import goals from "../goals";
 import interests from "../interests";
-import { daysUntil, dateToString } from "../converter";
+import { daysUntil, dateToString, getProgress } from "../converter";
+import { useUserStore } from "../store/user";
+const userState = useUserStore();
+const goals = ref([]);
+axios
+  .post("/getGoals.php", {
+    idUser: userState.user.idUser,
+  })
+  .then((response) => {
+    console.log(response.data);
+    goals.value = response.data;
+  })
+  .catch((error) => {
+    console.error(error);
+  });
 const filters = [
   {
     id: "category",
@@ -305,10 +355,10 @@ const filters = [
 const selected = ref([]);
 const filter = computed(() => {
   if (selected.value.length === 0) {
-    return goals;
+    return goals.value[0].value;
   } else {
-    return goals.filter((goal) =>
-      selected.value.includes(interests[goal.idInterest - 1].category)
+    return goals.value[0].value.filter((goal) =>
+      selected.value.includes(interests[goal.fiInterest - 1].category)
     );
   }
 });

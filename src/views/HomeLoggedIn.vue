@@ -250,8 +250,8 @@ axios
     idUser: userState.user.idUser,
   })
   .then((response) => {
-    console.log(response.data);
     stats.value = response.data;
+    console.log(stats.value[1].progress[1]);
   })
   .catch((error) => {
     console.error(error);

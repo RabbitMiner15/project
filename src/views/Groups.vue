@@ -175,58 +175,60 @@
 
           <div class="sm:my-auto overflow-hidden h-full md:col-span-4">
             <ul role="list" class="">
-              <li
-                v-for="group in filter"
-                :key="group.id"
-                class="px-4 py-4 sm:px-6 block hover:bg-gray-50 bg-white border shadow-sm my-3 sm:rounded-md"
-              >
-                <router-link :to="'/groups/' + group.id" class="">
-                  <div class="">
-                    <div class="flex items-center justify-between">
-                      <div class="flex flex-row">
-                        <p class="truncate text-sm font-medium text-lime-600">
-                          {{ group.groupName }}
-                        </p>
+              <template v-for="group in filter" :key="group.idGroup">
+                <li
+                  v-if="group.dtAccepted"
+                  class="px-4 py-4 sm:px-6 block hover:bg-gray-50 bg-white border shadow-sm my-3 sm:rounded-md"
+                >
+                  <router-link :to="'/groups/' + group.idGroup" class="">
+                    <div class="">
+                      <div class="flex items-center justify-between">
+                        <div class="flex flex-row">
+                          <p class="truncate text-sm font-medium text-lime-600">
+                            {{ group.dtGroupName }}
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                    <div class="mt-2 sm:flex sm:justify-between">
-                      <div class="sm:flex">
-                        <p class="flex items-center text-sm text-gray-500">
-                          {{ group.userName }}
-                        </p>
-                      </div>
-                      <div
-                        class="mt-2 flex items-center text-sm text-gray-500 sm:mt-0 sm:ml-6 sm:w-1/2"
-                      >
-                        <div
-                          class="w-full bg-gray-200 rounded-full dark:bg-gray-700"
-                        ></div>
-                      </div>
-                      <div class="flex -space-x-3 overflow-hidden">
-                        <div
-                          v-for="(member, index) in group.members.slice(0, 3)"
-                          :key="index"
-                          class="flex -space-x-2 overflow-hidden"
-                        >
-                          <img
-                            class="inline-block h-8 w-8 rounded-full"
-                            :src="'/' + member.picture + '.png'"
-                            alt="grouppicture"
-                          />
+                      <div class="mt-2 sm:flex sm:justify-between">
+                        <div class="sm:flex">
+                          <p class="flex items-center text-sm text-gray-500">
+                            {{ group.members[0].dtUsername }}
+                          </p>
                         </div>
                         <div
-                          v-if="group.members.length > 3"
-                          class="flex items-center text-sm font font-medium text-gray-500 pl-4 bg"
-                        ></div>
-                        <span
-                          class="inline-block h-8 w-8 pt-0.5 text-center rounded-full border-black bg-gray-300"
-                          >+{{ group.members.length - 3 }}</span
+                          class="mt-2 flex items-center text-sm text-gray-500 sm:mt-0 sm:ml-6 sm:w-1/2"
                         >
+                          <div
+                            class="w-full bg-gray-200 rounded-full dark:bg-gray-700"
+                          ></div>
+                        </div>
+                        <div class="flex -space-x-3 overflow-hidden">
+                          <div
+                            v-for="(member, index) in group.members.slice(0, 3)"
+                            :key="index"
+                            class="flex -space-x-2 overflow-hidden"
+                          >
+                            <img
+                              class="inline-block h-8 w-8 rounded-full"
+                              :src="'/' + member.dtPicture + '.png'"
+                              alt="grouppicture"
+                            />
+                          </div>
+                          <div
+                            v-if="group.members.length > 3"
+                            class="flex items-center text-sm font font-medium text-gray-500 pl-4 bg"
+                          >
+                            <span
+                              class="inline-block h-8 w-8 pt-0.5 text-center rounded-full border-black bg-gray-300"
+                              >+{{ group.members.length - 3 }}</span
+                            >
+                          </div>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </router-link>
-              </li>
+                  </router-link>
+                </li>
+              </template>
             </ul>
           </div>
         </div>
@@ -240,58 +242,60 @@
 
           <div class="sm:my-auto overflow-hidden md:col-span-4 h-full">
             <ul role="list" class="">
-              <li
-                v-for="invite in invites"
-                :key="invite.id"
-                class="block hover:bg-gray-50 bg-white cursor-pointer px-4 py-4 sm:px-6 border shadow-sm sm:rounded-md my-3"
-              >
-                <div class="">
+              <template v-for="group in groups" :key="group.idGroup">
+                <li
+                  v-if="!group.dtAccepted"
+                  class="block hover:bg-gray-50 bg-white cursor-pointer px-4 py-4 sm:px-6 border shadow-sm sm:rounded-md my-3"
+                >
                   <div class="">
-                    <div class="flex items-center justify-between">
-                      <div class="flex flex-row">
-                        <p class="truncate text-sm font-medium text-lime-600">
-                          {{ invite.groupName }}
-                        </p>
+                    <div class="">
+                      <div class="flex items-center justify-between">
+                        <div class="flex flex-row">
+                          <p class="truncate text-sm font-medium text-lime-600">
+                            {{ group.dtGroupName }}
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                    <div class="mt-2 sm:flex sm:justify-between">
-                      <div class="sm:flex">
-                        <p class="flex items-center text-sm text-gray-500">
-                          {{ invite.userName }}
-                        </p>
-                      </div>
-                      <div
-                        class="mt-2 flex items-center text-sm text-gray-500 sm:mt-0 sm:ml-6 sm:w-1/2"
-                      >
-                        <div
-                          class="w-full bg-gray-200 rounded-full dark:bg-gray-700"
-                        ></div>
-                      </div>
-                      <div class="flex -space-x-3 overflow-hidden">
-                        <div
-                          v-for="(member, index) in invite.members.slice(0, 3)"
-                          :key="index"
-                          class="flex -space-x-2 overflow-hidden"
-                        >
-                          <img
-                            class="inline-block h-8 w-8 rounded-full"
-                            :src="'/' + member.picture + '.png'"
-                            alt="grouppicture"
-                          />
+                      <div class="mt-2 sm:flex sm:justify-between">
+                        <div class="sm:flex">
+                          <p class="flex items-center text-sm text-gray-500">
+                            {{ group.members[0].dtUsername }}
+                          </p>
                         </div>
                         <div
-                          v-if="invite.members.length > 3"
-                          class="flex items-center text-sm font font-medium text-gray-500 pl-4 bg"
-                        ></div>
-                        <span
-                          class="inline-block h-8 w-8 pt-0.5 text-center rounded-full border-black bg-gray-300"
-                          >+{{ invite.members.length - 3 }}</span
+                          class="mt-2 flex items-center text-sm text-gray-500 sm:mt-0 sm:ml-6 sm:w-1/2"
                         >
+                          <div
+                            class="w-full bg-gray-200 rounded-full dark:bg-gray-700"
+                          ></div>
+                        </div>
+                        <div class="flex -space-x-3 overflow-hidden">
+                          <div
+                            v-for="(member, index) in group.members.slice(0, 3)"
+                            :key="index"
+                            class="flex -space-x-2 overflow-hidden"
+                          >
+                            <img
+                              class="inline-block h-8 w-8 rounded-full"
+                              :src="'/' + member.dtPicture + '.png'"
+                              alt="grouppicture"
+                            />
+                          </div>
+                          <div
+                            v-if="group.members.length > 3"
+                            class="flex items-center text-sm font font-medium text-gray-500 pl-4 bg"
+                          >
+                            <span
+                              class="inline-block h-8 w-8 pt-0.5 text-center rounded-full border-black bg-gray-300"
+                              >+{{ group.members.length - 3 }}</span
+                            >
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </li>
+                </li>
+              </template>
             </ul>
           </div>
         </div>
@@ -313,10 +317,21 @@ import {
 } from "@headlessui/vue";
 import { XMarkIcon } from "@heroicons/vue/24/outline";
 import { ChevronDownIcon, PlusIcon } from "@heroicons/vue/20/solid";
-import invites from "../invites";
-import groups from "../groups";
 import { useUserStore } from "../store/user";
+import axios from "axios";
 const userState = useUserStore();
+const groups = ref([]);
+axios
+  .post("/getGroups.php", {
+    idUser: userState.user.idUser,
+  })
+  .then((response) => {
+    groups.value = response.data;
+  })
+  .catch((error) => {
+    console.error(error);
+  });
+
 const filters = [
   {
     id: "filter",
@@ -327,9 +342,11 @@ const filters = [
 const selected = ref([]);
 const filter = computed(() => {
   if (selected.value.length === 0) {
-    return groups;
+    return groups.value[0].value;
   } else {
-    return groups.filter((group) => selected.value.includes(group.idUser));
+    return groups.value[0].value.filter((group) =>
+      selected.value.includes(group.fiUser)
+    );
   }
 });
 

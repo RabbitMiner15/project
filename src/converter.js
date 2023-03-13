@@ -19,8 +19,9 @@ const sum = (interest, progress) => {
   return progress[interest].values.reduce((partialSum, a) => partialSum + a, 0);
 };
 
-export const getProgress = (interest, progress) => {
+export const getProgress = (interest, progress, startDate, endDate) => {
   let result = 0;
+
   switch (interest) {
     case 1:
     case 2:
@@ -28,13 +29,46 @@ export const getProgress = (interest, progress) => {
     case 12:
     case 13:
       if (progress[interest]) {
-        result = sum(interest, progress);
+        if (!startDate) {
+          result = sum(interest, progress);
+        } else {
+          const startTimeStamp = new Date(startDate).getTime();
+          const endTimeStamp = new Date(endDate).getTime();
+          if (progress.hasOwnProperty(interest)) {
+            progress[interest].values.forEach((entry) => {
+              const timeStamp = new Date(entry.timestamp).getTime();
+              if (timeStamp >= startTimeStamp && timeStamp <= endTimeStamp) {
+                result += entry.value;
+                console.log(result);
+              }
+            });
+          }
+        }
       }
       break;
     case 3:
     case 6:
       if (progress[interest]) {
-        result = sum(interest, progress) / progress[interest].values.length;
+        if (!startDate) {
+          result = sum(interest, progress) / progress[interest].values.length;
+        } else {
+          length = 0;
+          const startTimeStamp = new Date(startDate).getTime();
+          const endTimeStamp = new Date(endDate).getTime();
+          if (progress.hasOwnProperty(interest)) {
+            progress[interest].values.forEach((entry) => {
+              const timeStamp = new Date(entry.timestamp).getTime();
+
+              if (timeStamp >= startTimeStamp && timeStamp <= endTimeStamp) {
+                result += entry.value;
+                length++;
+              }
+            });
+          }
+          if (length > 0) {
+            result = result / length;
+          }
+        }
       }
       break;
     case 5:
@@ -44,7 +78,10 @@ export const getProgress = (interest, progress) => {
     case 10:
     case 11:
       if (progress[result]) {
-        result = progress[interest].values.slice(-1);
+        if (!startDate) {
+          result = progress[interest].values.slice(-1);
+        } else {
+        }
       }
       break;
     default:
